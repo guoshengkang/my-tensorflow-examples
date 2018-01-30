@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/kang/Desktop/my_tf/model/model.ckpt"
+all_model_checkpoint_paths: "/home/kang/Desktop/my_tf/model/model.ckpt"
