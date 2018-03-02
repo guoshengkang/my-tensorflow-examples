@@ -1,6 +1,7 @@
 train samples: (800, 6212)
 test samples: (200, 6212)
 
+★★★【计算测试数据的得分】★★★
 以下3个结果应该一致,前6位一致,后三位有误差(保留9位小数)
 1.模型运行完后直接对测试数据的预测得分
 code:my_tf.py
@@ -12,6 +13,7 @@ output:test_score.txt
 code:restore_my_tf.py
 output:restore_prediction_value.txt
 
+★★★【计算样本数据的得分】★★★
 以下2个结果应该一致,前6位一致,后三位有误差(保留9位小数)
 1.加载保存的模型后直接样本数据的预测得分
 code:evaluation_by_model.py

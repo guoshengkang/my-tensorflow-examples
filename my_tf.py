@@ -51,22 +51,22 @@ z5 = tf.matmul(a4,w5) + b5
 prediction = tf.nn.sigmoid(z5)
 
 # 训练数据集 
-X_train = np.load('test_X_train.npy')   
+X_train = np.load('X_train.npy')   
 print "train samples:",X_train.shape
-y_train = np.load('test_y_train.npy') 
+y_train = np.load('y_train.npy') 
 train_num = y_train.shape[0]
 top20_train = int(top_percentage*train_num)
 y_train = y_train.reshape([train_num,1]) # 转成nx1数组
 dataset_size=train_num # 训练样本数目
 
 # 测试数据集
-X_test = np.load('test_X_test.npy')   
+X_test = np.load('X_test.npy')   
 print "test samples:",X_test.shape
-y_test = np.load('test_y_test.npy') 
-test_num = y_test.shape[0]
+y_test = np.load('y_test.npy') 
+num = y_test.shape[0]
 print y_test.shape
-top20_test = int(top_percentage*test_num)
-y_test = y_test.reshape([test_num,1]) # 转成nx1数组
+top20_test = int(top_percentage*num)
+y_test = y_test.reshape([num,1]) # 转成nx1数组
 
 # 定义损失函数,这里只需要刻画模型在训练数据上表现的损失函数
 mse_loss = tf.reduce_mean(tf.square(y - prediction))
@@ -125,13 +125,13 @@ with tf.Session() as sess:
             print "positive_rate:%0.6f,"%(positive_num/top20_test),
             prediction_label = np.array([[1 if p_value[0]>=0.5 else 0] for p_value in prediction_value]) # mx1
             yes_no=(prediction_label==y_test)
-            print "prediction_accuracy:%0.6f on test data"%(yes_no.sum()/float(test_num))
+            print "prediction_accuracy:%0.6f on test data"%(yes_no.sum()/float(num))
         else:
             sess.run(train_step,feed_dict={x:X_batch,y:y_batch}) 
     saver.save(sess,"/home/kang/Desktop/my_tf/model/model.ckpt")
 
     prediction_value = sess.run(prediction,feed_dict={x:X_test})
-    np.savetxt('prediction_value.txt',prediction_value,fmt=fmt,delimiter=',') 
+    np.savetxt('testdata_score_after_run.txt',prediction_value,fmt=fmt,delimiter=',') 
     
     #模型训练结束,输出和保存参数
     # print(w1.eval(session=sess)) 
