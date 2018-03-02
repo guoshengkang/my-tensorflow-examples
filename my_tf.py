@@ -17,6 +17,7 @@ batch_size = 100 # 定义每次训练数据batch的大小,防止内存溢出
 steps = 1000 # 设置神经网络的迭代次数 
 top_percentage = 0.2 # 用于统计前%20得分的正负样本数
 learning_rate = 0.02 # 学习率
+regularizer_weight=0.001 # 正则在损失函数中权重
 ###################################
 
 #定义输入和输出  
@@ -71,10 +72,10 @@ y_test = y_test.reshape([num,1]) # 转成nx1数组
 # 定义损失函数,这里只需要刻画模型在训练数据上表现的损失函数
 mse_loss = tf.reduce_mean(tf.square(y - prediction))
 # 这个函数第一个参数是'losses'是集合的名字,第二个参数是要加入这个集合的内容
-tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(0.001)(w1))
-tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(0.001)(w2))
-tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(0.001)(w3))
-tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(0.001)(w4))
+tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(regularizer_weight)(w1))
+tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(regularizer_weight)(w2))
+tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(regularizer_weight)(w3))
+tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(regularizer_weight)(w4))
 # 将均方误差损失函数加入损失集合
 tf.add_to_collection('losses',mse_loss)
 # 将集合中的元素加起来,得到最终的损失函数
