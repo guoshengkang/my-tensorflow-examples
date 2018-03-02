@@ -129,9 +129,9 @@ with tf.Session() as sess:
             print "prediction_accuracy:%0.6f on test data"%(yes_no.sum()/float(num))
         else:
             sess.run(train_step,feed_dict={x:X_batch,y:y_batch}) 
-    saver.save(sess,"/home/kang/Desktop/my_tf/model/model.ckpt")
+    saver.save(sess,"/home/kang/Desktop/my_tf/model/model.ckpt") #保存模型
 
-    prediction_value = sess.run(prediction,feed_dict={x:X_test})
+    prediction_value = sess.run(prediction,feed_dict={x:X_test}) #预测得分
     np.savetxt('testdata_score_after_run.txt',prediction_value,fmt=fmt,delimiter=',') 
     
     #模型训练结束,输出和保存参数
