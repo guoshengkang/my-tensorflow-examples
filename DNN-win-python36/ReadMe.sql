@@ -33,7 +33,7 @@ TensorBoard 1.8.0 at http://DESKTOP-UB4RBVB:6006 (Press CTRL+C to quit)
 
 ★★★【神经网络的定义】★★★
 以下2种定义方式是等价的,模型参数的输出是一致的。
-逐层定义神经网络的输出结果：
+逐层定义神经网络的输出结果：my_tf_1.py
 time:2018-07-18 09:59:56,training_steps:00000, total_loss:0.266210,[0.504263,0.618324],positive_rate:0.400000,prediction_accuracy:0.520000 on test data
 time:2018-07-18 09:59:57,training_steps:00100, total_loss:0.199363,[0.464213,0.639435],positive_rate:0.575000,prediction_accuracy:0.610000 on test data
 time:2018-07-18 09:59:57,training_steps:00200, total_loss:0.158241,[0.489225,0.718247],positive_rate:0.625000,prediction_accuracy:0.620000 on test data
@@ -46,7 +46,7 @@ time:2018-07-18 10:00:00,training_steps:00800, total_loss:0.050650,[0.603390,0.9
 time:2018-07-18 10:00:01,training_steps:00900, total_loss:0.055368,[0.624296,0.920436],positive_rate:0.675000,prediction_accuracy:0.610000 on test data
 0:00:09.332801 time used!!!
 Finished!!!
-循环定义神经网络的输出结果：
+循环定义神经网络的输出结果：my_tf_2.py
 time:2018-07-18 10:29:41,training_steps:00000, total_loss:0.266210,[0.504263,0.618324],positive_rate:0.400000,prediction_accuracy:0.520000 on test data
 time:2018-07-18 10:29:42,training_steps:00100, total_loss:0.199363,[0.464213,0.639435],positive_rate:0.575000,prediction_accuracy:0.610000 on test data
 time:2018-07-18 10:29:43,training_steps:00200, total_loss:0.158241,[0.489225,0.718247],positive_rate:0.625000,prediction_accuracy:0.620000 on test data
