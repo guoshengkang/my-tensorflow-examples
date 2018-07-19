@@ -146,10 +146,12 @@ class CNN(object):
             step += 1
         return self
 
-    def fit(self, X=None, Y=None, startLearningRate=0.1, miniBatchFraction=0.1, epoch=3, keepProb=0.7):
+    def fit(self, X=None, Y=None, startLearningRate=0.1, miniBatchFraction=0.1, epoch=3, keepProb=0.8):
         """
         训练模型
         """
+        if len(Y.shape)==1:
+            Y = Y.reshape([len(Y),1]) # 转成nx1数组,不会改变输入参数的值
         self.inputSize = X.shape[1]
         self.input = tf.placeholder(tf.float32, shape=[None, self.inputSize], name="X")
         self.label = tf.placeholder(tf.float32, shape=[None, 1], name="Y")
@@ -164,11 +166,8 @@ class CNN(object):
         """
         sess = self.sess
         prob = sess.run(self.out, feed_dict={self.input: X, self.keepProb: 1.0})
-        #模型训练结束,输出和保存参数
-        fmt=['%.9f']
-        for i in range(len(self.W)):
-            parameter_wi=self.W[i].eval(session=sess)
-            print(parameter_wi)
+        if len(prob.shape)==2:
+            prob = prob.reshape([max(prob.shape),]) # 转成nx1数组,不会改变输入参数的值
         return prob
 
 
