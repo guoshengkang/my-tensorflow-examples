@@ -23,6 +23,10 @@ def X2LSTMX(X=None):
 	for row in range(rows):
 		lstm_X.append([list(X[row])])
 	return np.array(lstm_X, dtype=np.float32)
+	# 以上代码等价于如下代码
+	# X=X.reshape([-1,1,X.shape[1]])
+	# X=X.astype(np.float32)
+
 
 class LSTM(object):
 	"""
@@ -70,14 +74,18 @@ class LSTM(object):
 		return predictions, loss, train_op
 
 	def fit(self,train_X=None,train_y=None):
-		train_X=X2LSTMX(train_X)
+		# 注意:train_X的size必须是[-1,1,col_num]
+		train_X=train_X.reshape([-1,1,train_X.shape[1]])
+		train_X=train_X.astype(np.float32)
 		# 建立深层循环网络模型
 		self.regressor = SKCompat(tf.contrib.learn.Estimator(model_fn=self.lstm_model))
 		# 调用fit函数训练模型
 		self.regressor.fit(train_X, train_y, batch_size=self.BATCH_SIZE, steps=self.TRAINING_STEPS)
 
 	def predict(self,test_X):
-		test_X=X2LSTMX(test_X)
+		# 注意:train_X的size必须是[-1,1,col_num]
+		test_X=test_X.reshape([-1,1,test_X.shape[1]])
+		test_X=test_X.astype(np.float32)
 		# 使用训练好的模型对测试集进行预测
 		predicted = array([pred for pred in self.regressor.predict(test_X)])
 		return predicted
@@ -88,10 +96,8 @@ if __name__ == "__main__":
     house_data = house_dataset.data;           #加载房屋属性参数
     house_price = house_dataset.target;        #加载房屋均价
     X_train,X_test,y_train,y_test=train_test_split(house_data,house_price,test_size=0.2,random_state=0)
-    print('X_train:',X_train.shape)
-    print('y_train:',y_train.shape)
-    print('X_test:',X_test.shape)
-    print('y_test:',y_test.shape)
+    print('X_train:',X_train.shape,'y_train:',y_train.shape)
+    print('X_test:',X_test.shape,'y_test:',y_test.shape)
     
     print('{:*^60}'.format('Call LSTM'))
     lstm = LSTM()
@@ -99,5 +105,4 @@ if __name__ == "__main__":
     y_pre=lstm.predict(X_test)
     print('{:-^30}'.format('Predicted Value'))
     print(y_pre)
-
 
