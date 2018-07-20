@@ -4,12 +4,27 @@
 # @Author  : ${guoshengkang} (${kangguosheng1@huokeyi.com})
 
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+# else--> Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
 import numpy as np
 from numpy import *
+from sklearn import datasets  
+from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow.contrib.learn.python.learn.estimators.estimator import SKCompat
 
-class dp_LSTM:
+
+def X2LSTMX(X=None):
+	'''
+	对于array X 转化为lstm的输入X 
+	'''
+	rows,cols=X.shape
+	lstm_X=[]
+	for row in range(rows):
+		lstm_X.append([list(X[row])])
+	return np.array(lstm_X, dtype=np.float32)
+
+class LSTM(object):
 	"""
 	Parameters
 	------------
@@ -55,17 +70,34 @@ class dp_LSTM:
 		return predictions, loss, train_op
 
 	def fit(self,train_X=None,train_y=None):
+		train_X=X2LSTMX(train_X)
 		# 建立深层循环网络模型
 		self.regressor = SKCompat(tf.contrib.learn.Estimator(model_fn=self.lstm_model))
 		# 调用fit函数训练模型
 		self.regressor.fit(train_X, train_y, batch_size=self.BATCH_SIZE, steps=self.TRAINING_STEPS)
 
 	def predict(self,test_X):
+		test_X=X2LSTMX(test_X)
 		# 使用训练好的模型对测试集进行预测
 		predicted = array([pred for pred in self.regressor.predict(test_X)])
 		return predicted
 
-# 变量定义 -------------------------------------------------------------
-deeplearning_methods={'LSTM':dp_LSTM}
+if __name__ == "__main__":
+    print('{:*^60}'.format('Input Data'))
+    house_dataset = datasets.load_boston();    #加载波士顿房价数据集
+    house_data = house_dataset.data;           #加载房屋属性参数
+    house_price = house_dataset.target;        #加载房屋均价
+    X_train,X_test,y_train,y_test=train_test_split(house_data,house_price,test_size=0.2,random_state=0)
+    print('X_train:',X_train.shape)
+    print('y_train:',y_train.shape)
+    print('X_test:',X_test.shape)
+    print('y_test:',y_test.shape)
+    
+    print('{:*^60}'.format('Call LSTM'))
+    lstm = LSTM()
+    lstm.fit(X_train, y_train)
+    y_pre=lstm.predict(X_test)
+    print('{:-^30}'.format('Predicted Value'))
+    print(y_pre)
 
 
